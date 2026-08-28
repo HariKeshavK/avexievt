@@ -1299,8 +1299,10 @@
 				}
 			}
 		} else {
-			// Redirect to /error when Backend Not Detected
-			await goto(`/error`);
+			// Mock backend config for UI preview
+			await config.set({ name: 'AVEXIE Preview', version: '0.0.0', default_locale: 'en' });
+			await user.set({ name: 'Demo User', role: 'admin', id: '1' });
+			localStorage.setItem('token', 'demo-token');
 		}
 
 		await tick();

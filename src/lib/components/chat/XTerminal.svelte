@@ -278,6 +278,16 @@
 		}
 	}
 
+	export const sendInput = (data: string) => {
+		if (ws && ws.readyState === WebSocket.OPEN) {
+			ws.send(new TextEncoder().encode(data));
+		}
+	};
+
+	export const runCommand = (command: string) => {
+		sendInput(`${command}\n`);
+	};
+
 	onMount(() => {
 		initTerminal();
 	});
