@@ -256,7 +256,6 @@
 		} catch (e) {
 			console.error('Failed to load user settings:', e);
 			toast.error($i18n.t('Failed to load Interface settings'));
-			return;
 		}
 
 		selectedTerminalId.set(localStorage.selectedTerminalId ?? null);

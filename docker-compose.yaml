@@ -8,6 +8,19 @@ services:
     restart: unless-stopped
     image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
 
+  open-terminal:
+    image: ghcr.io/open-webui/open-terminal:main
+    container_name: open-terminal
+    pull_policy: always
+    restart: unless-stopped
+    ports:
+      - ${OPEN_TERMINAL_PORT-8888}:8888
+    volumes:
+      - workspace:/workspace
+    environment:
+      - TERMINAL_SECRET_KEY=${WEBUI_SECRET_KEY-}
+      - WORKSPACE_DIR=/workspace
+
   avexie:
     build:
       context: .
@@ -18,11 +31,13 @@ services:
       - avexie:/app/backend/data
     depends_on:
       - ollama
+      - open-terminal
     ports:
       - ${AVEXIE_PORT-3000}:8080
     environment:
       - 'OLLAMA_BASE_URL=http://ollama:11434'
       - 'WEBUI_SECRET_KEY='
+      - 'OPEN_TERMINAL_URL=http://open-terminal:8888'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
@@ -30,3 +45,4 @@ services:
 volumes:
   ollama: {}
   avexie: {}
+  workspace: {}

@@ -232,6 +232,18 @@
 								</span>
 							</a>
 						{/if}
+
+						<a
+							draggable="false"
+							aria-current={activeWorkspaceSection === 'ide' ? 'page' : null}
+							class="min-w-fit px-1 text-sm inline-flex items-center gap-1 {activeWorkspaceSection ===
+							'ide'
+								? 'text-gray-900 dark:text-gray-100'
+								: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
+							href="/workspace/ide"
+						>
+							<span>{$i18n.t('IDE')}</span>
+						</a>
 					</div>
 
 					<div class="ml-auto flex shrink-0 items-center gap-1">
@@ -244,7 +256,9 @@
 		</nav>
 
 		<div
-			class="  pb-1 px-3 flex-1 min-w-0 max-h-full overflow-y-auto overflow-x-hidden"
+			class="{activeWorkspaceSection === 'ide'
+				? 'p-0 flex-1 min-w-0 h-full overflow-hidden'
+				: 'pb-1 px-3 flex-1 min-w-0 max-h-full overflow-y-auto overflow-x-hidden'}"
 			id="workspace-container"
 		>
 			<slot />

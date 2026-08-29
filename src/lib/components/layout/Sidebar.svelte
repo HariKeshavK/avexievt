@@ -25,7 +25,8 @@
 		visiblePinnedModels,
 		selectedFolder,
 		WEBUI_NAME,
-		sidebarWidth
+		sidebarWidth,
+		terminalServers
 	} from '$lib/stores';
 	import {
 		loadNextChatListPage,
@@ -94,7 +95,7 @@
 	import MobileSwipePanel from '../common/MobileSwipePanel.svelte';
 
 	const BREAKPOINT = 768;
-	const DEFAULT_PINNED_ITEMS = ['notes', 'workspace'];
+	const DEFAULT_PINNED_ITEMS = ['notes', 'workspace', 'ide'];
 
 	let scrollTop = 0;
 
@@ -170,6 +171,12 @@
 					$user?.permissions?.workspace?.tools ||
 					$user?.permissions?.workspace?.skills
 				);
+			case 'ide':
+				return (
+					$user?.role === 'admin' ||
+					($terminalServers && $terminalServers.length > 0) ||
+					(($settings?.terminalServers ?? []).length > 0)
+				);
 			case 'automations':
 				return (
 					$config?.features?.enable_automations &&
@@ -191,6 +198,7 @@
 		const items = {
 			notes: { label: 'Notes', href: '/notes', iconType: 'note' },
 			workspace: { label: 'Workspace', href: '/workspace', iconType: 'workspace' },
+			ide: { label: 'IDE', href: '/workspace/ide', iconType: 'ide' },
 			automations: { label: 'Automations', href: '/automations', iconType: 'automations' },
 			calendar: { label: 'Calendar', href: '/calendar', iconType: 'calendar' },
 			playground: { label: 'Playground', href: '/playground', iconType: 'playground' }
@@ -201,6 +209,7 @@
 	const menuItemPathPrefixes = {
 		notes: '/notes',
 		workspace: '/workspace',
+		ide: '/workspace/ide',
 		calendar: '/calendar',
 		automations: '/automations',
 		playground: '/playground'
@@ -1033,6 +1042,8 @@
 												<NotesIcon className="size-4" strokeWidth="1.5" />
 											{:else if itemId === 'workspace'}
 												<WorkspaceIcon className="size-4" strokeWidth="1.5" />
+											{:else if itemId === 'ide'}
+												<CodeIcon className="size-4" strokeWidth="1.5" />
 											{:else if itemId === 'automations'}
 												<ClockIcon className="size-4" strokeWidth="1.5" />
 											{:else if itemId === 'calendar'}
@@ -1255,6 +1266,8 @@
 													<NotesIcon className="size-4" strokeWidth="1.5" />
 												{:else if itemId === 'workspace'}
 													<WorkspaceIcon className="size-4" strokeWidth="1.5" />
+												{:else if itemId === 'ide'}
+													<CodeIcon className="size-4" strokeWidth="1.5" />
 												{:else if itemId === 'automations'}
 													<ClockIcon className="size-4" strokeWidth="1.5" />
 												{:else if itemId === 'calendar'}
